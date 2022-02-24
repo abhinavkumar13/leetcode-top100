@@ -1,0 +1,221 @@
+
+
+1.Parenthesis Checker:
+
+class Solution {
+    public boolean isValid(String s) {
+        HashMap <Character, Character> comp = new HashMap <Character,Character>();
+        comp.put(')','(');
+        comp.put('}','{');
+        comp.put(']','[');
+        Stack<Character> stack = new Stack<Character>();
+        char [] arr = s.toCharArray();
+        for (char val: arr){
+            if (val == '(' || val == '{' || val == '['){
+                stack.push(val);
+            }
+            else if (val == ')' || val == '}' || val == ']'){
+                if (!stack.empty() && stack.peek() == comp.get(val)){
+                    stack.pop();
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                continue;
+            }
+        }
+        if (stack.empty()){
+            return true;
+        }
+        return false;
+    }
+}
+
+
+
+
+
+2.Search Insert Position
+
+class Solution {
+
+    public int searchInsert(int[] nums, int target) {
+        int start =0;
+        int end = nums.length;
+        int answer = search(start,end,nums,target);
+        return answer;
+    }
+        
+    public int search(int start, int end, int[] nums, int target ){
+        int mid = (start+end)/2;
+        if (mid == start && nums[mid] != target){
+            if (nums[mid] < target){return mid +1;}
+            return mid ;
+        }
+        if (nums[mid] == target){
+            return mid;
+        }
+        else if (nums[mid]> target){
+            return search(start,mid,nums,target);
+        }
+        else{
+            return search(mid,end,nums,target);
+        }
+    }
+}
+
+
+3. Two Sums
+
+import java.util.*;  
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Hashtable <Integer,Integer> mapp = new Hashtable <Integer,Integer>();
+        int [] output = new int[2]; 
+        for (int i =0 ; i<nums.length; i++){
+            if (mapp.get(target - nums[i]) != null){
+                output[0] =i;
+                output[1] = mapp.get(target - nums[i]);
+                return output;
+            }
+            if (mapp.get(nums[i]) == null){
+                mapp.put(nums[i],i);
+            }
+        }
+        
+        return output;
+    }
+}  
+
+
+
+4.Merge Two Sorted Lists
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode head1 = list1;
+        ListNode head2 = list2;
+        ListNode current1 = head1;
+        ListNode current2 = head2;
+        ListNode head;
+        ListNode current;
+        if (head1 == null && head2 != null) return head2;
+        else if (head1 != null && head2 == null) return head1;
+        else if (head1 == null && head2 == null) return null;
+        else{
+            if (current1.val > current2.val){
+                    head = current2;
+                    current2 = current2.next;
+                }
+            else{
+                    head = current1;
+                    current1 = current1.next;
+                }
+            current = head;
+            while (current1 != null && current2 != null){
+                if (current1.val > current2.val){
+                    current.next = current2;
+                    current2 = current2.next;
+                }
+                else{
+                    current.next = current1;
+                    current1 = current1.next;
+                }
+                current = current.next;
+            }
+            if (current1 == null)current.next=current2;
+            else current.next = current1;
+        }
+        return head;
+        }
+        
+    }
+
+4. Maximum Subarray
+
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int sum = 0;
+        int max_sum =nums[0];
+        for (int i=0;i<nums.length;i++){
+            sum += nums[i];
+            if(sum>max_sum){
+                max_sum =sum;
+            }
+            if (sum<0){
+                sum =0;
+            }
+            
+        }
+        return max_sum;
+    }
+}
+
+5.Two Sum
+
+import java.util.*;  
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+       HashMap <Integer,Integer> map = new HashMap <Integer,Integer>();
+        int [] output = new int[2];
+        for (int i=0;i<nums.length;i++){
+            if (map.get(target-nums[i]) != null){
+                output[0] = map.get(target-nums[i]);
+                output[1] = i;
+                return output;
+            }
+            map.put(nums[i],i);
+        }
+        return output;
+    }
+}  
+
+
+6. Climbing Stairs
+
+class Solution {
+    HashMap <Integer,Integer> map = new HashMap<Integer,Integer>();
+    public int climbStairs(int n) {
+        if (n ==1 ){return 1;}
+        if (n ==2 ){return 2;}
+        if (map.get(n) !=null) return map.get(n);
+        else{
+            int ans = climbStairs(n-1) + climbStairs(n-2);
+            map.put(n,ans);
+            return ans;
+        }
+    }
+}
+
+7. Binary Tree Inorder Traversal
+
+class Solution {
+    public void inorder(TreeNode root, List<Integer>l){
+        if (root == null){
+            return;
+        }
+        else{
+            inorder(root.left,l);
+            l.add(root.val);
+            inorder(root.right,l);
+        }
+    }
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> l = new ArrayList<Integer>();
+        inorder(root,l);
+        return l;
+    }
+}
+
